@@ -1,5 +1,7 @@
 # manitor
 
+![](https://i.imgur.com/mRETGaY.png)
+
 manitor displays system information on the GNOME desktop:
 
 - CPU, memory, and swap usage,
