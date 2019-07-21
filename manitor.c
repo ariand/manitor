@@ -398,10 +398,12 @@ on_draw(GtkWidget *widget, cairo_t *cr, Manitor *self)
     double y = height - 1;
     double radius = 35;
     double gap = 15;
+    double cpuradius;
     {
         int ncpu = info_get_cpu_count(self->info);
         for (int i = 0; i < ncpu; i++) {
             int r = radius + i * gap;
+            cpuradius = r;
             int cpu = ncpu - i - 1;
             draw_ring(self, cr, info_get_cpu_usage(self->info, cpu),
                       x, y, r, 180, 360, CONF_CPU_ALARM);
@@ -413,7 +415,7 @@ on_draw(GtkWidget *widget, cairo_t *cr, Manitor *self)
     // Memory
     {
         double mem = info_get_mem(self->info);
-        x = cx - (2 * radius + 3 * gap);
+        x = cx - (cpuradius + 4 * gap);
         draw_ring(self, cr, mem, x, y, radius, 180, 360, CONF_MEM_ALARM);
         pango_layout_set_markup(layout, "MEM", -1);
         show_layout(cr, layout, x, y, 0.5, -1);
@@ -426,7 +428,7 @@ on_draw(GtkWidget *widget, cairo_t *cr, Manitor *self)
     // Swap
     {
         double swp = info_get_swap(self->info);
-        x = cx + (2 * radius + 3 * gap);
+        x = cx + (cpuradius + 4 * gap);
         draw_ring(self, cr, swp, x, y, radius, 180, 360, CONF_SWAP_ALARM);
         pango_layout_set_markup(layout, "SWAP", -1);
         show_layout(cr, layout, x, y, 0.5, -1);

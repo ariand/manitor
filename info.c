@@ -11,7 +11,7 @@
 
 #include "info.h"
 
-#define MAX_CPUS 4
+#define MAX_CPUS 16
 
 struct Cpu {
     int n; // Number of CPUs.
