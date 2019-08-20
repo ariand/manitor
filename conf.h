@@ -12,7 +12,7 @@
 #define CONF_MARGIN 10
 
 // The name of the network interface to monitor.
-#define CONF_IFACE "enp37s0"
+#define CONF_IFACE "enp8s0"
 
 // The default font to use (a Pango font specification).
 #define CONF_FONT "Roboto Condensed, 16px"
