@@ -491,17 +491,19 @@ main(int argc, char** argv)
 
     {
         GdkScreen *scr = gtk_window_get_screen(GTK_WINDOW(self->window));
+        g_signal_connect(G_OBJECT(scr), "monitors-changed", G_CALLBACK(on_monitors_changed), self);
+
+        // Set an RGBA visual for the window.
         GdkVisual *vis = gdk_screen_get_rgba_visual(scr);
         if (vis) {
             gtk_widget_set_visual(GTK_WIDGET(self->window), vis);
         }
-        g_signal_connect(G_OBJECT(scr), "monitors-changed", G_CALLBACK(on_monitors_changed), self);
-    }
 
-    // Clear the input shape to make mouse clicks go through the window.
-    cairo_region_t *region = cairo_region_create();
-    gtk_widget_input_shape_combine_region(GTK_WIDGET(self->window), region);
-    cairo_region_destroy(region);
+        // Clear the input shape to make mouse clicks go through the window.
+        cairo_region_t *empty_region = cairo_region_create();
+        gtk_widget_input_shape_combine_region(GTK_WIDGET(self->window), empty_region);
+        cairo_region_destroy(empty_region);
+    }
 
     g_signal_connect(G_OBJECT(self->window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(G_OBJECT(self->window), "draw", G_CALLBACK(on_draw), self);
