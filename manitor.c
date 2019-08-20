@@ -311,18 +311,20 @@ draw_clock(Manitor *self, cairo_t *cr, PangoLayout *layout, int window_width, in
     int cx = window_width / 2;
     int cy = window_height / 2;
 
-    GDateTime *tm = info_get_time(self->info);
-    if (G_UNLIKELY(!tm)) {
-        pango_layout_set_markup(layout, "H:MM \360\237\230\222", -1);
-        show_layout(cr, layout, cx, cy, 0.5, 0.5);
-    }
-
     // Draw the background
     cairo_save(cr);
     gdk_cairo_set_source_rgba(cr, self->shade_color);
     cairo_arc(cr, cx, cy, radius, 0, TAU);
     cairo_fill(cr);
     cairo_restore(cr);
+
+    GDateTime *tm = info_get_time(self->info);
+    // Handle the case when we cannot get the time...
+    if (G_UNLIKELY(!tm)) {
+        pango_layout_set_markup(layout, "Cannot get the time \360\237\230\262", -1);
+        show_layout(cr, layout, cx, cy, 0.5, 0.5);
+        return;
+    }
 
     // Show the time
     char *s = g_date_time_format(tm, CONF_CLOCK_FORMAT);
